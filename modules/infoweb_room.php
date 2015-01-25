@@ -1,8 +1,8 @@
 <?php
-class infoweb_student {
-	public static $ref = 2;
+class infoweb_room {
+	public static $ref = 4;
 	// Location of the data
-	public static $class_les = array('times'=>0, 'teacher'=>7, 'class'=>9, 'room'=>11, 'groups'=>13);
+	public static $class_les = array('times'=>0, 'teacher'=>7, 'class'=>9, 'groups'=>11);
 	public static $class_toets = array('times'=>0, 'class'=>2, 'teacher'=>4, 'room'=>6, 'groups'=>8);
 
 	//Days and times
@@ -13,6 +13,7 @@ class infoweb_student {
 	public static $hover_remove = array("showHoverInfo('', '", "', this);");
 
 	public static function main($id, $week) {
+		$id = strtoupper($id);
 		infoweb_main::setWeek($week);
 		$page = infoweb_main::getWhole($id, self::$ref);
 		return self::getSchedule($page, $week);

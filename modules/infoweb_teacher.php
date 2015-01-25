@@ -15,7 +15,7 @@ class infoweb_teacher {
 	public static function main($id, $week) {
 		$id = ucfirst(strtolower($id));
 		infoweb_main::setWeek($week);
-		$page = infoweb_main::getWhole($id, 3);
+		$page = infoweb_main::getWhole($id, self::$ref);
 		return self::getSchedule($page, $week);
 	}
 
