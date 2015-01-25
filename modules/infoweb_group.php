@@ -72,6 +72,9 @@ class infoweb_group {
 			if(strpos($class->style, 'tijd.gif') != 0)
 				$classes[$day_int][$ci]['changed'] = true;
 			$classes[$day_int][$ci]['break'] = false;
+			$classes[$day_int][$ci]['test'] = false;
+			if($classes[$day_int][$ci]['type'] == 'toets')
+				$classes[$day_int][$ci]['test'] = true;
 			$oldday = $day_int;
 			$ci++;
 		}
