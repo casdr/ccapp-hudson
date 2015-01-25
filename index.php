@@ -9,8 +9,7 @@ $app = new \Slim\Slim();
 $app->get('/', function () {
   echo 'Hello.';
 });
-$app->get('/test', function () {
-  infoweb_main::setWeek(5);
-  echo infoweb_student::getWhole(115123);
+$app->get('/test/:id/:week', function ($id, $week) {
+  print_r(infoweb_student::main($id, $week));
 });
 $app->run();

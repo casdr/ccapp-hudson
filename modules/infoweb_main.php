@@ -22,4 +22,19 @@ class infoweb_main {
 		foreach($cookies as $key=>$val) self::$cookiestr .= "$key=$val; ";
 		return true;
 	}
+	/**
+	 * Get the whole page for id
+	 * @param  integer the ID
+	 * @return string the whole page
+	 */
+	public static function getWhole($id=0, $ref=0) {
+		// Get the cookies for the week
+		$cookies = infoweb_main::$cookiestr;
+		// Set the url
+		$url = infoweb_main::$base_url.'/index.php?ref='.$ref.'&id='.$id;
+		// Run a GET request to URL using the cookies
+		$page = curl::get($url, array(CURLOPT_COOKIE=>$cookies));
+		// Return the page
+		return $page;
+	}
 }
