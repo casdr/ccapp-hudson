@@ -42,8 +42,22 @@ class infoweb_student {
 				$day_int = self::$days_toets[$wonum];
 				$class_this = self::$class_toets;
 			}
-			$classes[$day_int][$ci]['day'] = $day_int;
+			
 			$lines = explode('<br />', preg_replace('#<a.*?>([^>]*)</a>#i', '$1', str_replace(self::$hover_remove, '', $class->onclick)));
+			$ttimes = explode(' - ', $lines[$class_this['times']]);
+			if($ci != 0 && $oldday == $day_int && isset($classes[$day_int][$ci - 1]) && $classes[$day_int][$ci - 1]['end'] < $ttimes[0]) {
+				foreach($class_this as $key=>$val)
+					$classes[$day_int][$ci][$key] = '';
+				$classes[$day_int][$ci]['times'] = $classes[$day_int][$ci - 1]['end'].' - '.$ttimes[0];
+				$classes[$day_int][$ci]['start'] = $classes[$day_int][$ci - 1]['end'];
+				$classes[$day_int][$ci]['end'] = $ttimes[0];
+				$classes[$day_int][$ci]['canceled'] = false;
+				$classes[$day_int][$ci]['changed'] = false;
+				$classes[$day_int][$ci]['class'] = 'Pauze';
+				$classes[$day_int][$ci]['type'] = 'break';
+				$ci++;
+			}
+			$classes[$day_int][$ci]['day'] = $day_int;
 			foreach($class_this as $key=>$val)
 				$classes[$day_int][$ci][$key] = $lines[$val];
 			$extimes = explode(' - ', $classes[$day_int][$ci]['times']);
@@ -51,6 +65,8 @@ class infoweb_student {
 			$classes[$day_int][$ci]['end'] = $extimes[1];
 			$classes[$day_int][$ci]['canceled'] = false;
 			$classes[$day_int][$ci]['changed'] = false;
+			$classes[$day_int][$ci]['type'] = $class->class;
+			$oldday = $day_int;
 			$ci++;
 		}
 		return $classes;
