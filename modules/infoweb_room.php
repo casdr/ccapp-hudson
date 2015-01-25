@@ -67,6 +67,8 @@ class infoweb_room {
 			$classes[$day_int][$ci]['canceled'] = false;
 			$classes[$day_int][$ci]['changed'] = false;
 			$classes[$day_int][$ci]['type'] = $class->class;
+			if(strpos($class->style, 'tijd.gif') != 0)
+				$classes[$day_int][$ci]['changed'] = true;
 			$oldday = $day_int;
 			$ci++;
 		}
