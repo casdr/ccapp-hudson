@@ -43,7 +43,7 @@ class infoweb_group {
 				$day_int = self::$days_toets[$wonum];
 				$class_this = self::$class_toets;
 			}
-			if($day_int != $oldday) $ci = 0;
+			if(isset($oldday) && $day_int != $oldday) $ci = 0;
 			
 			$lines = explode('<br />', preg_replace('#<a.*?>([^>]*)</a>#i', '$1', str_replace(self::$hover_remove, '', $class->onclick)));
 			$ttimes = explode(' - ', $lines[$class_this['times']]);
