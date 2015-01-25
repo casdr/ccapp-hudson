@@ -11,9 +11,9 @@ $app->get('/', function () {
   echo 'Hello.';
 });
 $app->get('/v1/student/schedule/:id/:week', function ($id, $week) {
-  print_r(infoweb_student::main($id, $week));
+  echo json_encode(infoweb_student::main($id, $week));
 });
 $app->get('/v1/teacher/schedule/:id/:week', function ($id, $week) {
-  print_r(infoweb_teacher::main($id, $week));
+  echo json_encode(infoweb_teacher::main($id, $week));
 });
 $app->run();
