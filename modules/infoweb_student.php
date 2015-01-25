@@ -3,7 +3,7 @@ class infoweb_student {
 	public static $ref = 2;
 	// Location of the data
 	public static $class_les = array('times'=>0, 'teacher'=>7, 'class'=>9, 'room'=>11, 'groups'=>13);
-	public static $class_toets = array('times'=>0, 'class'=>2, 'teacher'=>4, 'room'=>6, 'groups'=>8, 'comment'=>10);
+	public static $class_toets = array('times'=>0, 'class'=>2, 'teacher'=>4, 'room'=>6, 'groups'=>8);
 
 	//Days and times
 	public static $days_les = array('lesma'=>0,'lesdi'=>1,'leswo'=>2,'lesdo'=>3,'lesvr'=>4);
@@ -26,11 +26,13 @@ class infoweb_student {
 	 */
 	public static function getSchedule($page='', $week=0) {
 		$classes = array();
+		foreach(self::$days_les as $day)
+			$classes[$day] = array();
 		$ci = 0;
 		$page = str_get_html($page);
 		if($page->find('.roosterdeel', 0) == false) return false;
 		$schedule = $page->find('.roosterdeel', 0);
-		foreach($schedule->find('div [class=les]') as $class) {
+		foreach($schedule->find('div [class=les],[class=toets]') as $class) {
 			$wonum = trim(str_replace(range(0,9),'',$class->id));
 			if($class->class == 'les') {
 				$day_int = self::$days_les[$wonum];
@@ -47,6 +49,8 @@ class infoweb_student {
 			$extimes = explode(' - ', $classes[$day_int][$ci]['times']);
 			$classes[$day_int][$ci]['start'] = $extimes[0];
 			$classes[$day_int][$ci]['end'] = $extimes[1];
+			$classes[$day_int][$ci]['canceled'] = false;
+			$classes[$day_int][$ci]['changed'] = false;
 			$ci++;
 		}
 		return $classes;
