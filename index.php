@@ -8,6 +8,7 @@ require 'modules/infoweb_teacher.php';
 require 'modules/infoweb_room.php';
 require 'modules/infoweb_group.php';
 require 'modules/infoweb_weeks.php';
+require 'modules/infoweb_teacherlist.php';
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
@@ -28,6 +29,9 @@ $app->get('/v1/group/:id/schedule/:week', function ($id, $week) {
 });
 $app->get('/v1/list/weeks', function () {
   echo json_encode(infoweb_weeks::main());
+});
+$app->get('/v1/list/teachers', function () {
+  echo json_encode(infoweb_teacherlist::main());
 });
 $app->run();
 if(isset($_GET['callback'])) echo ');';
