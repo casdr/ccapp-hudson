@@ -2,6 +2,7 @@
 require 'Slim/Slim.php';
 require 'classes/curl.php';
 require 'classes/simplehtmldom.php';
+//Stats
 require 'modules/infoweb_main.php';
 require 'modules/infoweb_student.php';
 require 'modules/infoweb_teacher.php';
@@ -9,6 +10,8 @@ require 'modules/infoweb_room.php';
 require 'modules/infoweb_group.php';
 require 'modules/infoweb_weeks.php';
 require 'modules/infoweb_teacherlist.php';
+//App
+require 'modules/app_iotd.php';
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
@@ -32,6 +35,10 @@ $app->get('/v1/list/weeks', function () {
 });
 $app->get('/v1/list/teachers', function () {
   echo json_encode(infoweb_teacherlist::main());
+});
+
+$app->get('/v1/app/iotd', function () {
+  echo app_iotd::main();
 });
 $app->run();
 if(isset($_GET['callback'])) echo ');';
