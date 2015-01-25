@@ -13,16 +13,16 @@ $app = new \Slim\Slim();
 $app->get('/', function () {
   echo 'Hello.';
 });
-$app->get('/v1/student/schedule/:id/:week', function ($id, $week) {
+$app->get('/v1/student/:id/schedule/:week', function ($id, $week) {
   echo json_encode(infoweb_student::main($id, $week));
 });
-$app->get('/v1/teacher/schedule/:id/:week', function ($id, $week) {
+$app->get('/v1/teacher/:id/schedule/:week', function ($id, $week) {
   echo json_encode(infoweb_teacher::main($id, $week));
 });
-$app->get('/v1/room/schedule/:id/:week', function ($id, $week) {
+$app->get('/v1/room/:id/schedule/:week', function ($id, $week) {
   echo json_encode(infoweb_room::main($id, $week));
 });
-$app->get('/v1/group/schedule/:id/:week', function ($id, $week) {
+$app->get('/v1/group/:id/schedule/:week', function ($id, $week) {
   echo json_encode(infoweb_group::main($id, $week));
 });
 $app->get('/v1/list/weeks', function () {
