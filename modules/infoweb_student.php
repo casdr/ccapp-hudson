@@ -56,6 +56,7 @@ class infoweb_student {
 				$classes[$day_int][$ci]['changed'] = false;
 				$classes[$day_int][$ci]['class'] = 'Pauze';
 				$classes[$day_int][$ci]['type'] = 'break';
+				$classes[$day_int][$ci]['break'] = true;
 				$ci++;
 			}
 			$classes[$day_int][$ci]['day'] = $day_int;
@@ -69,6 +70,7 @@ class infoweb_student {
 			$classes[$day_int][$ci]['type'] = $class->class;
 			if(strpos($class->style, 'tijd.gif') != 0)
 				$classes[$day_int][$ci]['changed'] = true;
+			$classes[$day_int][$ci]['break'] = false;
 			$oldday = $day_int;
 			$ci++;
 		}
