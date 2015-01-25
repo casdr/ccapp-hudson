@@ -10,6 +10,7 @@ require 'modules/infoweb_group.php';
 require 'modules/infoweb_weeks.php';
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
+if(isset($_GET['callback'])) echo $_GET['callback'].'(';
 $app->get('/', function () {
   echo 'Hello.';
 });
@@ -29,3 +30,4 @@ $app->get('/v1/list/weeks', function () {
   echo json_encode(infoweb_weeks::main());
 });
 $app->run();
+if(isset($_GET['callback'])) echo ');';
