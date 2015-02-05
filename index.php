@@ -49,19 +49,25 @@ $app->get('/v1/list/weeks', function () {
 $app->get('/v1/list/teachers', function () {
   echo json_encode(infoweb_list_teachers::main(), JSON_PRETTY_PRINT);
 });
-$app->get('/v1/list/students/create', function() {
-	echo json_encode(infoweb_list_students::save(), JSON_PRETTY_PRINT);
-});
 $app->get('/v1/list/students', function() {
-	echo json_encode(infoweb_list_students::view(), JSON_PRETTY_PRINT);
+	echo json_encode(infoweb_list_students::view(false), JSON_PRETTY_PRINT);
+});
+$app->get('/v1/list/students/ingroups', function() {
+	echo json_encode(infoweb_list_students::view(true), JSON_PRETTY_PRINT);
 });
 $app->get('/v1/list/rooms', function() {
 	echo json_encode(infoweb_list_rooms::main(), JSON_PRETTY_PRINT);
+});
+
+// List generators
+$app->get('/v1/list/students/create', function() {
+	echo json_encode(infoweb_list_students::save(), JSON_PRETTY_PRINT);
 });
 $app->get('/v1/list/rooms/create', function() {
 	infoweb_list_rooms::generateJson();
 });
 $app->get('/v1/search/student/:id/name', function($id) {
+	$name = '';
 	foreach(infoweb_list_students::view() as $group) {
 		foreach($group['students'] as $student) {
 			if(strpos($student['id'], $id) != 0) $name = $student['name'];

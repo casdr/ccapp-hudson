@@ -91,8 +91,12 @@ class infoweb_main {
 				$ci++;
 			}
 			$classes[$day_int][$ci]['day'] = $day_int;
-			foreach($class_this as $key=>$val)
-				$classes[$day_int][$ci][$key] = $lines[$val];
+			foreach($class_this as $key=>$val) {
+				if(isset($lines[$val]))
+					$classes[$day_int][$ci][$key] = $lines[$val];
+				else
+					$classes[$day_int][$ci][$key] = '';
+			}
 			$extimes = explode(' - ', $classes[$day_int][$ci]['times']);
 			$classes[$day_int][$ci]['start'] = $extimes[0];
 			$classes[$day_int][$ci]['end'] = $extimes[1];

@@ -43,9 +43,26 @@ class infoweb_list_students {
 		file_put_contents($file, $current);
 		return true;
 	}
-	public static function view() {
+
+	/**
+	 * @param bool $inGroups
+	 *
+	 * @return array
+	 */
+	public static function view($inGroups = false) {
+		$students = array();
 		$file = dirname(__FILE__).'/../../data/students.json';
 		$data = file_get_contents($file);
-		return json_decode($data, true);
+		$list = json_decode($data, true);
+		if($inGroups == false) {
+			foreach ($list as $group) {
+				foreach ($group['students'] as $s) {
+					$students[] = $s;
+				}
+			}
+		} else
+			$students = $list;
+
+		return $students;
 	}
 }
