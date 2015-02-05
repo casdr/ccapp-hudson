@@ -1,5 +1,5 @@
 <?php
-class infoweb_teacherlist {
+class infoweb_list_teachers {
 	public static function main() {
 		return self::get();
 	}
