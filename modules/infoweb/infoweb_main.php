@@ -112,7 +112,7 @@ class infoweb_main {
 
 			$classes[$day_int][$ci]['current'] = false;
 			$ctime = date('H:i');
-			if($classes[$day_int][$ci]['start'] <= $ctime && $classes[$day_int][$ci]['end'] >= $ctime && date('w') == $classes[$day_int][$ci]['day'] && date('W') == $week) {
+			if($classes[$day_int][$ci]['start'] <= $ctime && $classes[$day_int][$ci]['end'] >= $ctime && date('w')-1 == $classes[$day_int][$ci]['day'] && date('W') == $week) {
 				$duration = strtotime($classes[$day_int][$ci]['end']) - strtotime($classes[$day_int][$ci]['start']);
 				$cduration = strtotime($ctime) - strtotime($classes[$day_int][$ci]['start']);
 				$classes[$day_int][$ci]['progress'] = 100 / $duration * $cduration;
