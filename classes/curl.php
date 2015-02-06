@@ -1,12 +1,13 @@
 <?php
 class curl {
-  /**
-   * Do a get request
-   * @param string  $request The URL you want to open
-   * @param array   $options Options you want to add to cURL
-   * @param array   $headers Headers you want to add
-   * @return string          Page contents
-  **/
+    /**
+     * @param string $request
+     * @param array  $options
+     * @param array  $headers
+     *
+     * @return mixed
+     * @throws Exception
+     */
   public static function get($request='', $options=array(), $headers=array()) {
       //Initializing...
       $ch = curl_init();
@@ -22,19 +23,23 @@ class curl {
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
       //Set the content as a variable
       $content = curl_exec($ch);
+      if (FALSE === $content)
+          throw new Exception(curl_error($ch), curl_errno($ch));
       //Close the connection
       curl_close($ch);
       //Return it
       return $content;
   }
-  /**
-   * Do a POST request
-   * @param string  $request The URL you want to open
-   * @param array   $content POST data
-   * @param array   $options Options you want to add to cURL
-   * @param array   $headers Headers you want to add
-   * @return string          Page contents
-  **/
+
+    /**
+     * @param string $request
+     * @param array  $content
+     * @param array  $options
+     * @param array  $headers
+     *
+     * @return array|mixed
+     * @throws Exception
+     */
   public static function post($request='', $content=array(), $options=array(), $headers=array()) {
       //Set the post fields
       $fields_string = '';
@@ -59,19 +64,23 @@ class curl {
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
       //Run!
       $content = curl_exec($ch);
+      if (FALSE === $content)
+          throw new Exception(curl_error($ch), curl_errno($ch));
       //Close the connection
       curl_close($ch);
       //Return the page.
       return $content;
   }
-  /**
-   * Do a PUT request
-   * @param string  $request The URL you want to open
-   * @param array   $content PUT data
-   * @param array   $options Options you want to add to cURL
-   * @param array   $headers Headers you want to add
-   * @return string          Page contents
-   **/
+
+    /**
+     * @param string $request
+     * @param string $content
+     * @param array  $options
+     * @param array  $headers
+     *
+     * @return string
+     * @throws Exception
+     */
   public static function put($request='', $content='', $options=array(), $headers=array()) {
       //Init
       $ch = curl_init();
@@ -91,19 +100,23 @@ class curl {
       curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
       //Run!
       $content = curl_exec($ch);
+      if (FALSE === $content)
+          throw new Exception(curl_error($ch), curl_errno($ch));
       //Close the connection
       curl_close($ch);
       //Return the page.
       return $content;
   }
-  /**
-   * Do a DELETE request
-   * @param string  $request The URL you want to open
-   * @param array   $content DELETE data
-   * @param array   $options Options you want to add to cURL
-   * @param array   $headers Headers you want to add
-   * @return string          Page contents
-   **/
+
+    /**
+     * @param string $request
+     * @param array  $content
+     * @param array  $options
+     * @param array  $headers
+     *
+     * @return array|string
+     * @throws Exception
+     */
   public static function delete($request='', $content=array(), $options=array(), $headers=array()) {
       //Set the content
       $fields_string = '';
@@ -127,6 +140,8 @@ class curl {
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
       //Run!
       $content = trim(curl_exec($ch));
+      if (FALSE === $content)
+          throw new Exception(curl_error($ch), curl_errno($ch));
       //Close the connection
       curl_close($ch);
       //Return the page

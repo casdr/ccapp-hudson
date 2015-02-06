@@ -13,6 +13,7 @@ require 'modules/infoweb/infoweb_list_weeks.php';
 require 'modules/infoweb/infoweb_list_teachers.php';
 require 'modules/infoweb/infoweb_list_students.php';
 require 'modules/infoweb/infoweb_list_rooms.php';
+require 'modules/infoweb/infoweb_list_groups.php';
 
 // Portal
 require 'modules/portal/portal_main.php';
@@ -23,6 +24,9 @@ require 'modules/app_iotd.php';
 
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
+
+$app->contentType('application/json');
+
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
 $app->get('/', function () {
   echo 'Hello.';
@@ -58,6 +62,9 @@ $app->get('/v1/list/students/ingroups', function() {
 $app->get('/v1/list/rooms', function() {
 	echo json_encode(infoweb_list_rooms::main(), JSON_PRETTY_PRINT);
 });
+$app->get('/v1/list/groups', function() {
+	echo json_encode(infoweb_list_groups::main(), JSON_PRETTY_PRINT);
+});
 
 // List generators
 $app->get('/v1/list/students/create', function() {
@@ -66,6 +73,8 @@ $app->get('/v1/list/students/create', function() {
 $app->get('/v1/list/rooms/create', function() {
 	infoweb_list_rooms::generateJson();
 });
+
+// Testing
 $app->get('/v1/search/student/:id/name', function($id) {
 	$name = '';
 	foreach(infoweb_list_students::view() as $group) {
@@ -77,14 +86,21 @@ $app->get('/v1/search/student/:id/name', function($id) {
 });
 
 // Grades
-$app->get('/v1/student/:id/grades/:password', function($id, $password) {
+$app->post('/v1/student/:id/grades/:periode', function($id, $periode) {
+	$password = $_POST['password'];
 	$user = 'cc'.str_replace(array('cc', 'Cc', 'cC', 'CC'), '', $id);
-	echo portal_student::main($user, $password);
+	echo json_encode(portal_student::main($user, $password, $periode), JSON_PRETTY_PRINT);
 });
 
 // Stuff for in the app
 $app->get('/v1/app/iotd', function () {
   echo app_iotd::main();
+});
+$app->get('/v1/app/ver/steven', function () {
+	echo json_encode(array(
+		'current'=>1,
+		'url'=>'https://api.ccapp.it/download/steven.jar'
+	));
 });
 
 // Run le app

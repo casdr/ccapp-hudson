@@ -2,14 +2,18 @@
 class portal_student {
 
 	/**
-	 * Main function for student grades
-	 * @param  string $user     Username for the portal
-	 * @param  string $password Password for the portal
-	 * @return string           HTML of page
+	 * @param string $user
+	 * @param string $password
+	 * @param int    $periode
+	 *
+	 * @return mixed
 	 */
-	public static function main($user='', $password='') {
+	public static function main($user='', $password='', $periode=1) {
 		portal_main::login(portal_main::$url_students, $user, $password);
-		return portal_main::getWhole(portal_main::$url_students);
+		return array(
+			'periode'=>$periode,
+			'classes'=>portal_main::createArray(portal_main::getWhole(portal_main::$url_students, $periode))
+		);
 	}
 
 }
