@@ -96,10 +96,16 @@ $app->post('/v1/student/:id/grades/:periode', function($id, $periode) {
 $app->get('/v1/app/iotd', function () {
   echo app_iotd::main();
 });
-$app->get('/v1/app/ver/steven', function () {
+$app->get('/v1/app/versions', function () {
 	echo json_encode(array(
-		'current'=>1,
-		'url'=>'https://api.ccapp.it/download/steven.jar'
+		'ccapp_touch' => array(
+			'current'=>0.8.9,
+			'url'=>'https://api.ccapp.it/downloads/ccapp_touch.jar'
+		),
+		'steven' => array(
+			'current'=>0.1.5,
+			'url'=>'https://api.ccapp.it/downloads/steven.jar'
+		)
 	));
 });
 
