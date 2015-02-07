@@ -106,7 +106,7 @@ $app->get('/v1/app/versions', function () {
 			'current'=>'0.1.5',
 			'url'=>'https://api.ccapp.it/downloads/steven.jar'
 		)
-	));
+	), JSON_PRETTY_PRINT);
 });
 
 // Run le app
