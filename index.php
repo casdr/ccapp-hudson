@@ -99,11 +99,11 @@ $app->get('/v1/app/iotd', function () {
 $app->get('/v1/app/versions', function () {
 	echo json_encode(array(
 		'ccapp_touch' => array(
-			'current'=>0.8.9,
+			'current'=>'0.8.9',
 			'url'=>'https://api.ccapp.it/downloads/ccapp_touch.jar'
 		),
 		'steven' => array(
-			'current'=>0.1.5,
+			'current'=>'0.1.5',
 			'url'=>'https://api.ccapp.it/downloads/steven.jar'
 		)
 	));
