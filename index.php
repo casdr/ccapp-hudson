@@ -98,14 +98,20 @@ $app->get('/v1/app/iotd', function () {
 });
 $app->get('/v1/app/versions', function () {
 	echo json_encode(array(
-		'ccapp_touch' => array(
-			'current'=>'0.8.9',
-			'url'=>'https://api.ccapp.it/downloads/ccapp_touch.jar'
+		'ccapp_steven' => array(
+			'release'=>array(
+				'version'=>1.0,
+				'url'=>'https://api.ccapp.it/downloads/release-ccapp_steven.jar'
+			),
+			'beta'=>array(
+				'version'=>0.9,
+				'url'=>'https://api.ccapp.it/downloads/beta-ccapp_steven.jar'
+			),
+			'alpha'=>array(
+				'version'=>0.8,
+				'url'=>'https://api.ccapp.it/downloads/alpha-ccapp_steven.jar'
+			)
 		),
-		'steven' => array(
-			'current'=>'0.1.5',
-			'url'=>'https://api.ccapp.it/downloads/steven.jar'
-		)
 	), JSON_PRETTY_PRINT);
 });
 
