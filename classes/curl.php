@@ -1,5 +1,18 @@
 <?php
 class curl {
+
+  /**
+   * Generate a field string
+   * @param  array  The content
+   * @return string The string
+   */
+  public static function fieldstring($content=array()) {
+    $fields_string = '';
+    foreach($content as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+    rtrim($fields_string, '&');
+    return $fields_string;
+  }
+
     /**
      * @param string $request
      * @param array  $options

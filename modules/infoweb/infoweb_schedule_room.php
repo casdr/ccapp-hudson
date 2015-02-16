@@ -2,8 +2,8 @@
 class infoweb_room {
 	public static $ref = 4;
 	// Location of the data
-	public static $class_les = array('times'=>0, 'teacher'=>7, 'class'=>9, 'groups'=>11);
-	public static $class_toets = array('times'=>0, 'class'=>2, 'teacher'=>4, 'room'=>6, 'groups'=>8);
+	public static $class_les = array('times'=>0, 'teacher'=>7, 'class'=>9, 'lesson'=>9, 'groups'=>11);
+	public static $class_toets = array('times'=>0, 'class'=>2, 'lesson'=>2, 'teacher'=>4, 'room'=>6, 'groups'=>8);
 
 	/**
 	 * @param $id

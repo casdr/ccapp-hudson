@@ -86,6 +86,7 @@ class infoweb_main {
 				$classes[$day_int][$ci]['canceled'] = false;
 				$classes[$day_int][$ci]['changed'] = false;
 				$classes[$day_int][$ci]['class'] = 'Pauze';
+				$classes[$day_int][$ci]['lesson'] = 'Pauze';
 				$classes[$day_int][$ci]['type'] = 'break';
 				$classes[$day_int][$ci]['break'] = true;
 				$ci++;
