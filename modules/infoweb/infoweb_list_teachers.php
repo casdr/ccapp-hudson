@@ -5,7 +5,7 @@ class infoweb_list_teachers {
 	}
 	public static function get() {
 		$teachers = array();
-	  $week = date('W');
+	  $week = 10;
 
 	  //Select the right week
 	  $wset = curl_init();
