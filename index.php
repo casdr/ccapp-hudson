@@ -24,8 +24,9 @@ require 'modules/app_iotd.php';
 
 function createResponse($data=array()) {
 	if(isset($_GET['format']) && $_GET['format'] == 'xml') {
+		$array = array('data'=>$data);
 		$xml = new SimpleXMLElement('<response/>');
-		array_walk_recursive($data, array ($xml, 'addChild'));
+		array_walk_recursive($array, array ($xml, 'addChild'));
 		print $xml->asXML();
 	} else {
 		print json_encode($data, JSON_PRETTY_PRINT);
