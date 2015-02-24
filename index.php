@@ -22,14 +22,12 @@ require 'modules/portal/portal_student.php';
 // App
 require 'modules/app_iotd.php';
 
-function createResponse($data=array()) use($app) {
+function createResponse($data=array()) {
 	if(isset($_GET['format']) && $_GET['format'] == 'xml') {
-		$app->contentType('application/xml');
 		$xml = new SimpleXMLElement('<response/>');
 		array_walk_recursive($data, array ($xml, 'addChild'));
 		print $xml->asXML();
 	} else {
-		$app->contentType('application/json');
 		print json_encode($data, JSON_PRETTY_PRINT);
 	}
 }
