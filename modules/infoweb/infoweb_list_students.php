@@ -65,4 +65,16 @@ class infoweb_list_students {
 
 		return $students;
 	}
+
+	/**
+	 * Return students with id as key
+	 * @return array the list
+	 */
+	public static function byId() {
+		$all = self::view();
+		$students = array();
+		foreach($all as $k=>$v) 
+			$students[$k] = $v;
+		return $students;
+	}
 }

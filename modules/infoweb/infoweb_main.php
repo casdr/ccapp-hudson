@@ -52,7 +52,7 @@ class infoweb_main {
 	 * @param  string  $page        The schedule page
 	 * @param  integer $week        Weeknumber
 	 * @param  array   $class_les  Array with the lines of data
-	 * @param  array   $class_toets Array with the lines of data for tests
+	 * @param  array   $class_toets Array with the lines of data for tests]
 	 * @return array                Array with the schedule data
 	 */
 	public static function createArray($page='', $week=0, $class_les=array(), $class_toets=array()) {

@@ -22,10 +22,20 @@ require 'modules/portal/portal_student.php';
 // App
 require 'modules/app_iotd.php';
 
+function createResponse($data=array()) use($app) {
+	if(isset($_GET['format']) && $_GET['format'] == 'xml') {
+		$app->contentType('application/xml');
+		$xml = new SimpleXMLElement('<response/>');
+		array_walk_recursive($data, array ($xml, 'addChild'));
+		print $xml->asXML();
+	} else {
+		$app->contentType('application/json');
+		print json_encode($data, JSON_PRETTY_PRINT);
+	}
+}
+
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
-
-$app->contentType('application/json');
 
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
 $app->get('/', function () {
@@ -34,41 +44,41 @@ $app->get('/', function () {
 
 // Schedules
 $app->get('/v1/student/:id/schedule/:week', function ($id, $week) {
-  echo json_encode(infoweb_student::main($id, $week), JSON_PRETTY_PRINT);
+  createResponse(infoweb_student::main($id, $week));
 });
 $app->get('/v1/teacher/:id/schedule/:week', function ($id, $week) {
-  echo json_encode(infoweb_teacher::main($id, $week), JSON_PRETTY_PRINT);
+  createResponse(infoweb_teacher::main($id, $week));
 });
 $app->get('/v1/room/:id/schedule/:week', function ($id, $week) {
-  echo json_encode(infoweb_room::main($id, $week), JSON_PRETTY_PRINT);
+  createResponse(infoweb_room::main($id, $week));
 });
 $app->get('/v1/group/:id/schedule/:week', function ($id, $week) {
-  echo json_encode(infoweb_group::main($id, $week), JSON_PRETTY_PRINT);
+  createResponse(infoweb_group::main($id, $week));
 });
 
 // Lists
 $app->get('/v1/list/weeks', function () {
-  echo json_encode(infoweb_weeks::main(), JSON_PRETTY_PRINT);
+  createResponse(infoweb_weeks::main());
 });
 $app->get('/v1/list/teachers', function () {
-  echo json_encode(infoweb_list_teachers::main(), JSON_PRETTY_PRINT);
+  createResponse(infoweb_list_teachers::main());
 });
 $app->get('/v1/list/students', function() {
-	echo json_encode(infoweb_list_students::view(false), JSON_PRETTY_PRINT);
+	createResponse(infoweb_list_students::view(false));
 });
 $app->get('/v1/list/students/ingroups', function() {
-	echo json_encode(infoweb_list_students::view(true), JSON_PRETTY_PRINT);
+	createResponse(infoweb_list_students::view(true));
 });
 $app->get('/v1/list/rooms', function() {
-	echo json_encode(infoweb_list_rooms::main(), JSON_PRETTY_PRINT);
+	createResponse(infoweb_list_rooms::main());
 });
 $app->get('/v1/list/groups', function() {
-	echo json_encode(infoweb_list_groups::main(), JSON_PRETTY_PRINT);
+	createResponse(infoweb_list_groups::main());
 });
 
 // List generators
 $app->get('/v1/list/students/create', function() {
-	echo json_encode(infoweb_list_students::save(), JSON_PRETTY_PRINT);
+	createResponse(infoweb_list_students::save());
 });
 $app->get('/v1/list/rooms/create', function() {
 	infoweb_list_rooms::generateJson();
@@ -82,14 +92,14 @@ $app->get('/v1/search/student/:id/name', function($id) {
 			if(strpos($student['id'], $id) != 0) $name = $student['name'];
 		}
 	}
-	echo json_encode(array('name'=>$name, 'id'=>$id));
+	createResponse(array('name'=>$name, 'id'=>$id));
 });
 
 // Grades
 $app->post('/v1/student/:id/grades/:periode', function($id, $periode) {
 	$password = $_POST['password'];
 	$user = 'cc'.str_replace(array('cc', 'Cc', 'cC', 'CC'), '', $id);
-	echo json_encode(portal_student::main($user, $password, $periode), JSON_PRETTY_PRINT);
+	createResponse(portal_student::main($user, $password, $periode));
 });
 
 // Stuff for in the app
@@ -97,7 +107,7 @@ $app->get('/v1/app/iotd', function () {
   echo app_iotd::main();
 });
 $app->get('/v1/app/versions', function () {
-	echo json_encode(array(
+	createResponse(array(
 		'ccapp_comp' => array(
 			'release'=>array(
 				'version'=>1.0,
@@ -112,7 +122,7 @@ $app->get('/v1/app/versions', function () {
 				'url'=>'https://api.ccapp.it/downloads/alpha-ccapp_comp.jar'
 			)
 		),
-	), JSON_PRETTY_PRINT);
+	));
 });
 
 // Run le app
