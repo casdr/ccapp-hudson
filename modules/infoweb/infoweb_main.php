@@ -58,7 +58,7 @@ class infoweb_main {
 	public static function createArray($page='', $week=0, $class_les=array(), $class_toets=array()) {
 		$classes = array();
 		$page = str_get_html($page);
-		$name = str_replace('Het rooster van week '.$week.' voor ', '', $schedule->find('h2',0)->plaintext);
+		$name = str_replace('Het rooster van week '.$week.' voor ', '', $page->find('h2',0)->plaintext);
 		foreach(self::$days_les as $day) {
 			$classes['lessons'][$day] = array();
 			$classes['name'] = $name;
