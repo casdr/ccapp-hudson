@@ -3,13 +3,13 @@ class infoweb_main {
 	public static $base_host = 'infoweb.candea.nl';
 	public static $base_url = 'http://infoweb.candea.nl';
 	public static $cookiestr = '';
-	
+
 	// Days and times
 	public static $days_les = array('lesma'=>0,'lesdi'=>1,'leswo'=>2,'lesdo'=>3,'lesvr'=>4);
 	public static $days_toets = array('toetsma'=>0,'toetsdi'=>1,'toetswo'=>2,'toetsdo'=>3,'toetsvr'=>4);
 
 	public static $hover_remove = array("showHoverInfo('', '", "', this);");
-	
+
 	/**
 	 * Set the week number and store it in self::$cookiestr
 	 * @param integer $week Weeknumber
@@ -29,7 +29,7 @@ class infoweb_main {
 		foreach($cookies as $key=>$val) self::$cookiestr .= "$key=$val; ";
 		return true;
 	}
-	
+
 	/**
 	 * Get the whole schedule page
 	 * @param  integer $id  ID of the 'thing'
@@ -46,7 +46,7 @@ class infoweb_main {
 		// Return the page
 		return $page;
 	}
-	
+
 	/**
 	 * Turn the page into an usable array
 	 * @param  string  $page        The schedule page
@@ -57,10 +57,13 @@ class infoweb_main {
 	 */
 	public static function createArray($page='', $week=0, $class_les=array(), $class_toets=array()) {
 		$classes = array();
-		foreach(self::$days_les as $day)
-			$classes[$day] = array();
-		$ci = 0;
 		$page = str_get_html($page);
+		$name = str_replace('Het rooster van week '.$week.' voor ', '', $schedule->find('h2',0)->plaintext);
+		foreach(self::$days_les as $day) {
+			$classes['lessons'][$day] = array();
+			$classes['name'] = $name;
+		}
+		$ci = 0;
 		if($page->find('.roosterdeel', 0) == false) return false;
 		$schedule = $page->find('.roosterdeel', 0);
 		foreach($schedule->find('div [class=les],[class=toets]') as $class) {
@@ -74,49 +77,49 @@ class infoweb_main {
 				$class_this = $class_toets;
 			}
 			if(isset($oldday) && $day_int != $oldday) $ci = 0;
-			
+
 			$lines = explode('<br />', preg_replace('#<a.*?>([^>]*)</a>#i', '$1', str_replace(self::$hover_remove, '', $class->onclick)));
 			$ttimes = explode(' - ', $lines[$class_this['times']]);
-			if($ci != 0 && $oldday == $day_int && isset($classes[$day_int][$ci - 1]) && $classes[$day_int][$ci - 1]['end'] < $ttimes[0]) {
+			if($ci != 0 && $oldday == $day_int && isset($classes['lessons'][$day_int][$ci - 1]) && $classes['lessons'][$day_int][$ci - 1]['end'] < $ttimes[0]) {
 				foreach($class_this as $key=>$val)
-					$classes[$day_int][$ci][$key] = '';
-				$classes[$day_int][$ci]['times'] = $classes[$day_int][$ci - 1]['end'].' - '.$ttimes[0];
-				$classes[$day_int][$ci]['start'] = $classes[$day_int][$ci - 1]['end'];
-				$classes[$day_int][$ci]['end'] = $ttimes[0];
-				$classes[$day_int][$ci]['canceled'] = false;
-				$classes[$day_int][$ci]['changed'] = false;
-				$classes[$day_int][$ci]['class'] = 'Pauze';
-				$classes[$day_int][$ci]['lesson'] = 'Pauze';
-				$classes[$day_int][$ci]['type'] = 'break';
-				$classes[$day_int][$ci]['break'] = true;
+					$classes['lessons'][$day_int][$ci][$key] = '';
+				$classes['lessons'][$day_int][$ci]['times'] = $classes['lessons'][$day_int][$ci - 1]['end'].' - '.$ttimes[0];
+				$classes['lessons'][$day_int][$ci]['start'] = $classes['lessons'][$day_int][$ci - 1]['end'];
+				$classes['lessons'][$day_int][$ci]['end'] = $ttimes[0];
+				$classes['lessons'][$day_int][$ci]['canceled'] = false;
+				$classes['lessons'][$day_int][$ci]['changed'] = false;
+				$classes['lessons'][$day_int][$ci]['class'] = 'Pauze';
+				$classes['lessons'][$day_int][$ci]['lesson'] = 'Pauze';
+				$classes['lessons'][$day_int][$ci]['type'] = 'break';
+				$classes['lessons'][$day_int][$ci]['break'] = true;
 				$ci++;
 			}
-			$classes[$day_int][$ci]['day'] = $day_int;
+			$classes['lessons'][$day_int][$ci]['day'] = $day_int;
 			foreach($class_this as $key=>$val) {
 				if(isset($lines[$val]))
-					$classes[$day_int][$ci][$key] = $lines[$val];
+					$classes['lessons'][$day_int][$ci][$key] = $lines[$val];
 				else
-					$classes[$day_int][$ci][$key] = '';
+					$classes['lessons'][$day_int][$ci][$key] = '';
 			}
-			$extimes = explode(' - ', $classes[$day_int][$ci]['times']);
-			$classes[$day_int][$ci]['start'] = $extimes[0];
-			$classes[$day_int][$ci]['end'] = $extimes[1];
-			$classes[$day_int][$ci]['canceled'] = false;
-			$classes[$day_int][$ci]['changed'] = false;
-			$classes[$day_int][$ci]['type'] = $class->class;
+			$extimes = explode(' - ', $classes['lessons'][$day_int][$ci]['times']);
+			$classes['lessons'][$day_int][$ci]['start'] = $extimes[0];
+			$classes['lessons'][$day_int][$ci]['end'] = $extimes[1];
+			$classes['lessons'][$day_int][$ci]['canceled'] = false;
+			$classes['lessons'][$day_int][$ci]['changed'] = false;
+			$classes['lessons'][$day_int][$ci]['type'] = $class->class;
 			if(strpos($class->style, 'tijd.gif') != 0)
-				$classes[$day_int][$ci]['changed'] = true;
-			$classes[$day_int][$ci]['break'] = false;
-			$classes[$day_int][$ci]['test'] = false;
-			if($classes[$day_int][$ci]['type'] == 'toets')
-				$classes[$day_int][$ci]['test'] = true;
+				$classes['lessons'][$day_int][$ci]['changed'] = true;
+			$classes['lessons'][$day_int][$ci]['break'] = false;
+			$classes['lessons'][$day_int][$ci]['test'] = false;
+			if($classes['lessons'][$day_int][$ci]['type'] == 'toets')
+				$classes['lessons'][$day_int][$ci]['test'] = true;
 
-			$classes[$day_int][$ci]['current'] = false;
+			$classes['lessons'][$day_int][$ci]['current'] = false;
 			$ctime = date('H:i');
-			if($classes[$day_int][$ci]['start'] <= $ctime && $classes[$day_int][$ci]['end'] >= $ctime && date('w')-1 == $classes[$day_int][$ci]['day'] && date('W') == $week) {
-				$duration = strtotime($classes[$day_int][$ci]['end']) - strtotime($classes[$day_int][$ci]['start']);
-				$cduration = strtotime($ctime) - strtotime($classes[$day_int][$ci]['start']);
-				$classes[$day_int][$ci]['progress'] = 100 / $duration * $cduration;
+			if($classes['lessons'][$day_int][$ci]['start'] <= $ctime && $classes['lessons'][$day_int][$ci]['end'] >= $ctime && date('w')-1 == $classes['lessons'][$day_int][$ci]['day'] && date('W') == $week) {
+				$duration = strtotime($classes['lessons'][$day_int][$ci]['end']) - strtotime($classes['lessons'][$day_int][$ci]['start']);
+				$cduration = strtotime($ctime) - strtotime($classes['lessons'][$day_int][$ci]['start']);
+				$classes['lessons'][$day_int][$ci]['progress'] = 100 / $duration * $cduration;
 			}
 
 			$oldday = $day_int;
