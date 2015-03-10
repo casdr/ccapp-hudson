@@ -38,7 +38,7 @@ $app = new \Slim\Slim();
 
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
 $app->get('/', function () {
-  echo 'Hello.';
+  echo 'You shouldn\'t be here!';
 });
 
 // Schedules
