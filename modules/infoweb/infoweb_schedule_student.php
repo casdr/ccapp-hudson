@@ -15,7 +15,7 @@ class infoweb_student {
 		infoweb_main::setWeek(14);
 		$cookies = infoweb_main::$cookiestr;
 		// Set the url
-		$url = infoweb_main::$base_url.'/export.php?ref='.$ref.'&id='.$id.'&dag='.$time;
+		$url = infoweb_main::$base_url.'/export.php?ref='.self::$ref.'&id='.$id.'&dag='.$time;
 		// Run a GET request to URL using the cookies
 		$page = curl::get($url, array(CURLOPT_COOKIE=>$cookies));
 		return $page;
