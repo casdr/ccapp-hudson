@@ -50,7 +50,7 @@ $app->get('/v1/student/:id/schedule/:week', function ($id, $week) use ($app) {
 	}
   else createResponse(infoweb_student::main($id, $week));
 });
-$app->get('/v1/teacher/:id/schedule/:week', function ($id, $week) {
+$app->get('/v1/teacher/:id/schedule/:week', function ($id, $week) use($app) {
 	if($week == 'ics') {
 		$app->response->headers->set('Content-Type', 'text/calendar; charset=utf-8');
 		$app->response->headers->set('Content-Disposition', 'attachment; filename=schedule'.$id.'.ics');
