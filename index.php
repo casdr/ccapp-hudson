@@ -45,8 +45,7 @@ $app->get('/', function () {
 $app->get('/v1/student/:id/schedule/:week', function ($id, $week) use ($app) {
 	if($week == 'ics') {
 		$app->response->headers->set('Content-Type', 'text/calendar; charset=utf-8');
-		$app->response->headers->set('Content-Disposition', 'attachment; filename=schedule'.$id.'.ics')
-	} else {
+		$app->response->headers->set('Content-Disposition', 'attachment; filename=schedule'.$id.'.ics');
 		echo infoweb_student::ics($id);
 	}
   else createResponse(infoweb_student::main($id, $week));
