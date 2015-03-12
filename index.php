@@ -45,6 +45,9 @@ $app->get('/', function () {
 $app->get('/v1/student/:id/schedule/:week', function ($id, $week) {
   createResponse(infoweb_student::main($id, $week));
 });
+$app->get('/v1/student/:id/schedule/ics', function ($id) {
+	echo infoweb_student::ics($id);
+});
 $app->get('/v1/teacher/:id/schedule/:week', function ($id, $week) {
   createResponse(infoweb_teacher::main($id, $week));
 });
