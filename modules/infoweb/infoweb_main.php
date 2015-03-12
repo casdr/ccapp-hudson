@@ -30,6 +30,22 @@ class infoweb_main {
 		return true;
 	}
 
+	public static function setSecure($ref) {
+		// Set the URL
+		$url = self::$base_url.'/index.php?ref='.$ref;
+		// Run a GET request
+		$get = curl::get($url, array(CURLOPT_HEADER=>1));
+		// Get the cookies from the header
+		preg_match('/^Set-Cookie:\s*([^;]*)/mi', $get, $cookies);
+		// Get the first cookie
+		parse_str($cookies[1], $cookies);
+		// Make the cookiestr empty
+		self::$cookiestr = '';
+		// Add the cookies
+		foreach($cookies as $key=>$val) self::$cookiestr .= "$key=$val; ";
+		return true;
+	}
+
 	/**
 	 * Get the whole schedule page
 	 * @param  integer $id  ID of the 'thing'

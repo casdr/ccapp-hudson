@@ -12,7 +12,7 @@ class infoweb_student {
 	}
 	public static function ics($id) {
 		$time = strtotime('monday this week');
-		infoweb_main::setWeek(14);
+		infoweb_main::setSecure(self::$ref);
 		$cookies = infoweb_main::$cookiestr;
 		// Set the url
 		$url = infoweb_main::$base_url.'/export.php?ref='.self::$ref.'&id='.$id.'&dag='.$time;
