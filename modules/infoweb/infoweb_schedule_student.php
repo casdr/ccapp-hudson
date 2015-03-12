@@ -18,6 +18,6 @@ class infoweb_student {
 		$url = infoweb_main::$base_url.'/export.php?ref='.self::$ref.'&id='.$id.'&dag='.$time;
 		// Run a GET request to URL using the cookies
 		$page = curl::get($url, array(CURLOPT_COOKIE=>$cookies));
-		return $page;
+		return str_replace('VERSION:2.11.1004', 'VERSION:2.0', $page);
 	}
 }
