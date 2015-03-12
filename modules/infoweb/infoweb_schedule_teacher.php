@@ -11,4 +11,14 @@ class infoweb_teacher {
 		$page = infoweb_main::getWhole($id, self::$ref);
 		return infoweb_main::createArray($page, $week, self::$class_les, self::$class_toets);
 	}
+	public static function ics($id) {
+		$time = strtotime('monday this week');
+		infoweb_main::setSecure(self::$ref);
+		$cookies = infoweb_main::$cookiestr;
+		// Set the url
+		$url = infoweb_main::$base_url.'/export.php?ref='.self::$ref.'&id='.$id.'&dag='.$time;
+		// Run a GET request to URL using the cookies
+		$page = curl::get($url, array(CURLOPT_COOKIE=>$cookies));
+		return str_replace('VERSION:2.11.1004', 'VERSION:2.0', $page);
+	}
 }
