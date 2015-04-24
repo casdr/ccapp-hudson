@@ -111,6 +111,7 @@ class infoweb_main {
 				$ci++;
 			}
 			$classes['lessons'][$day_int][$ci]['day'] = $day_int;
+			$classes['lessons'][$day_int][$ci]['dday'] = $day_int;
 			foreach($class_this as $key=>$val) {
 				if(isset($lines[$val]))
 					$classes['lessons'][$day_int][$ci][$key] = $lines[$val];
