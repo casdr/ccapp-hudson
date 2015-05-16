@@ -119,8 +119,8 @@ $app->get('/v1/app/versions', function () {
 	createResponse(array(
 		'ccapp_comp' => array(
 			'release'=>array(
-				'version'=>1.0,
-				'url'=>'https://api.ccapp.it/downloads/release-ccapp_comp.jar'
+				'version'=>2.1,
+				'url'=>'https://api.ccapp.it/downloads/CCApp.jar'
 			),
 			'beta'=>array(
 				'version'=>0.9,
