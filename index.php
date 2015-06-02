@@ -113,7 +113,7 @@ $app->post('/v1/student/:id/grades/:periode', function($id, $periode) {
 
 // Stuff for in the app
 $app->get('/v1/app/iotd', function () use($app) {
-  createResponse(array('url'=>app_iotd::main());
+  createResponse(array('url'=>app_iotd::main()));
 });
 $app->get('/v1/app/versions', function () {
 	createResponse(array(
