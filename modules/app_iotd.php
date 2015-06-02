@@ -10,6 +10,6 @@ class app_iotd {
 
 		$page = file_get_html('http://photography.nationalgeographic.com'.$link);
 		$img = $page->find('.primary_photo', 0)->find('img', 0)->src;
-		return $img;
+		return 'http:'.$img;
 	}
 }
