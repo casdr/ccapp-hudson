@@ -36,18 +36,15 @@ function createResponse($data=array()) {
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 
-$app->response->headers->set('Access-Control-Allow-Origin', '*');
-
-// Access-Control headers are received during OPTIONS requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
-    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-        $app->response->headers->set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");         
+	$app->response->headers->set("Access-Control-Allow-Origin", "*");
+	$app->response->headers->set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+	$app->response->headers->set("Access-Control-Max-Age", "1000");
+	$app->response->headers->set("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
 
-    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-        $app->response->headers->set("Access-Control-Allow-Headers", "{$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-
-    exit(0);
+} else {
+	$app->response->headers->set("Access-Control-Allow-Origin", "*");
 }
 
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
