@@ -38,11 +38,6 @@ $app = new \Slim\Slim();
 
 $app->response->headers->set('Access-Control-Allow-Origin', '*');
 
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    $app->response->headers->set('Access-Control-Allow-Credentials: true');
-    $app->response->headers->set('Access-Control-Max-Age: 86400');    // cache for 1 day
-}
-
 // Access-Control headers are received during OPTIONS requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
