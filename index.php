@@ -36,9 +36,6 @@ function createResponse($data=array()) {
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 
-$app->map('/:x+', function($x) {
-    http_response_code(200);
-})->via('OPTIONS');
 
 // Allow from any origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -54,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
         header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+        
+    http_response_code(200)
 }
 
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
