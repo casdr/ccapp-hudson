@@ -37,12 +37,11 @@ function createResponse($data=array()) {
 $app = new \Slim\Slim();
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-
 	$app->response->headers->set("Access-Control-Allow-Origin", "*");
 	$app->response->headers->set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 	$app->response->headers->set("Access-Control-Max-Age", "1000");
 	$app->response->headers->set("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
-
+    exit(0);
 } else {
 	$app->response->headers->set("Access-Control-Allow-Origin", "*");
 }
