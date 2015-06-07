@@ -36,14 +36,24 @@ function createResponse($data=array()) {
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 
+$app->map('/:x+', function($x) {
+    http_response_code(200);
+})->via('OPTIONS');
+
+// Allow from any origin
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');    // cache for 1 day
+}
+// Access-Control headers are received during OPTIONS requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-	$app->response->headers->set("Access-Control-Allow-Origin", "*");
-	$app->response->headers->set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-	$app->response->headers->set("Access-Control-Max-Age", "1000");
-	$app->response->headers->set("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
-    exit(0);
-} else {
-	$app->response->headers->set("Access-Control-Allow-Origin", "*");
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");         
+
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+        header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
 }
 
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
@@ -129,7 +139,7 @@ $app->get('/v1/app/versions', function () {
 	createResponse(array(
 		'ccapp_comp' => array(
 			'release'=>array(
-				'version'=>2.3,
+				'version'=>2.2,
 				'url'=>'https://api.ccapp.it/downloads/CCApp.jar'
 			)
 		),
