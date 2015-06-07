@@ -36,6 +36,8 @@ function createResponse($data=array()) {
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 
+$app->response->headers->set('Access-Control-Allow-Origin', '*');
+
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
 $app->get('/', function () {
   echo 'You shouldn\'t be here!';
