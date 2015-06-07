@@ -42,10 +42,10 @@ $app->response->headers->set('Access-Control-Allow-Origin', '*');
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-        $app->response->headers->set("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
+        $app->response->headers->set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");         
 
     if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-        $app->response->headers->set("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+        $app->response->headers->set("Access-Control-Allow-Headers", "{$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
 
     exit(0);
 }
