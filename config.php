@@ -1,4 +1,5 @@
 <?php
+
 return array(
 	'keys'=>array(
 		'Er3WAJ4RzH5G'=>array('ccweb.nl', 'dev.ccweb.nl'), // CCWeb
