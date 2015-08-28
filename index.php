@@ -109,17 +109,6 @@ $app->get('/v1/search/student/:id/name', function($id) {
 $app->get('/v1/app/iotd', function () use($app) {
   createResponse(array('url'=>app_iotd::main()));
 });
-
-$app->get('/v1/app/versions', function () {
-	createResponse(array(
-		'ccapp_comp' => array(
-			'release'=>array(
-				'version'=>2.2,
-				'url'=>'https://api.ccapp.it/downloads/CCApp.jar'
-			)
-		),
-	));
-});
 */
 
 // v1
@@ -155,7 +144,16 @@ $app->get('/v1/app/versions', function () {
 
 // });
 
-
+$app->get('/v1/app/versions', function () {
+	createResponse(array(
+		'ccapp_comp' => array(
+			'release'=>array(
+				'version'=>2.2,
+				'url'=>'https://api.ccapp.it/downloads/CCApp.jar'
+			)
+		),
+	));
+});
 
 $app->get('/v2/zportal/settoken/:key', function($key) use($app) {
 	$zportal = new Zportal();
