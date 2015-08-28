@@ -166,13 +166,27 @@ $app->get('/v2/zportal/settoken/:key', function($key) use($app) {
 		'token' => $zportal->token
 	]);
 });
-$app->get('/v2/zportal/schedule/:week', function($week) {
+$app->get('/v2/zportal/schedule/:week', function($week) use($app) {
+	$token = '';
+	if(isset($_GET['token'])) $token = $_GET['token'];
+	elseif(isset($_COOKIE['ztoken'])) $token = $_COOKIE['ztoken'];
+
+	if($token == '') {
+		$app->halt(401, 'Please set the token first');
+	}
+
 	if($week == 0) 
 		$week = date('W');
 	$zportal = new Zportal();
-	$zportal->setToken($_COOKIE['ztoken']);
+	$zportal->setToken($token);
 	$schedule = $zportal->getSchedule($week);
-	createResponse($schedule);
+	if($schedule->response->status != 200) {
+		if($schedule->response->status == 401)
+			$app->halt(401, 'The token is incorrect');
+
+		$app->halt(500, $schedule->response->message);
+	}
+	createResponse($schedule->response->data);
 });
 
 // Run le app
