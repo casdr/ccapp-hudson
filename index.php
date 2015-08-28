@@ -157,7 +157,7 @@ $app->get('/v1/app/versions', function () {
 
 
 
-$app->get('/v2/student/settoken/:key', function($key) use($app) {
+$app->get('/v2/zportal/settoken/:key', function($key) use($app) {
 	$zportal = new Zportal();
 	$zportal->setAppKey($key);
 	$zportal->getToken();
@@ -166,7 +166,7 @@ $app->get('/v2/student/settoken/:key', function($key) use($app) {
 		'token' => $zportal->token
 	]);
 });
-$app->get('/v2/student/schedule/:week', function($week) {
+$app->get('/v2/zportal/schedule/:week', function($week) {
 	if($week == 0) 
 		$week = date('W');
 	$zportal = new Zportal();
