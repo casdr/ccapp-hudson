@@ -19,6 +19,9 @@ require 'modules/infoweb/infoweb_list_groups.php';
 require 'modules/portal/portal_main.php';
 require 'modules/portal/portal_student.php';
 
+//Zportal
+require 'modules/zportal/zportal_main.php';
+
 // App
 require 'modules/app_iotd.php';
 
@@ -53,33 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
-$app->get('/', function () {
-  echo 'You shouldn\'t be here!';
-});
-
+/*
 // Schedules
-$app->get('/v1/student/:id/schedule/:week', function ($id, $week) use ($app) {
-	if($week == 'ics') {
-		$app->response->headers->set('Content-Type', 'text/calendar; charset=utf-8');
-		$app->response->headers->set('Content-Disposition', 'attachment; filename=schedule'.$id.'.ics');
-		echo infoweb_student::ics($id);
-	}
-  else createResponse(infoweb_student::main($id, $week));
-});
-$app->get('/v1/teacher/:id/schedule/:week', function ($id, $week) use($app) {
-	if($week == 'ics') {
-		$app->response->headers->set('Content-Type', 'text/calendar; charset=utf-8');
-		$app->response->headers->set('Content-Disposition', 'attachment; filename=schedule'.$id.'.ics');
-		echo infoweb_teacher::ics($id);
-	}
-  createResponse(infoweb_teacher::main($id, $week));
-});
 $app->get('/v1/room/:id/schedule/:week', function ($id, $week) {
   createResponse(infoweb_room::main($id, $week));
 });
 $app->get('/v1/group/:id/schedule/:week', function ($id, $week) {
   createResponse(infoweb_group::main($id, $week));
 });
+
 
 // Lists
 $app->get('/v1/list/weeks', function () {
@@ -120,17 +105,11 @@ $app->get('/v1/search/student/:id/name', function($id) {
 	createResponse(array('name'=>$name, 'id'=>$id));
 });
 
-// Grades
-$app->post('/v1/student/:id/grades/:periode', function($id, $periode) {
-	$password = $_POST['password'];
-	$user = 'cc'.str_replace(array('cc', 'Cc', 'cC', 'CC'), '', $id);
-	createResponse(portal_student::main($user, $password, $periode));
-});
-
 // Stuff for in the app
 $app->get('/v1/app/iotd', function () use($app) {
   createResponse(array('url'=>app_iotd::main()));
 });
+
 $app->get('/v1/app/versions', function () {
 	createResponse(array(
 		'ccapp_comp' => array(
@@ -140,6 +119,60 @@ $app->get('/v1/app/versions', function () {
 			)
 		),
 	));
+});
+*/
+
+// v1
+// $app->group('/v1', function() use($app) {
+
+// 	$app->group('/student/:id', function($id) use($app) {
+
+// 		$app->get('/schedule/:week', function ($id, $week) use ($app) {
+// 			if($week == 'ics') {
+// 				$app->response->headers->set('Content-Type', 'text/calendar; charset=utf-8');
+// 				$app->response->headers->set('Content-Disposition', 'attachment; filename=schedule'.$id.'.ics');
+// 				echo infoweb_student::ics($id);
+// 			}
+// 		  else createResponse(infoweb_student::main($id, $week));
+// 		});
+// 		$app->post('/grades/:periode', function($id, $periode) {
+// 			$password = $_POST['password'];
+// 			$user = 'cc'.str_replace(array('cc', 'Cc', 'cC', 'CC'), '', $id);
+// 			createResponse(portal_student::main($user, $password, $periode));
+// 		});
+
+// 	});
+// 	$app->group('/teacher/:id', function($id) use($app) {
+// 		$app->get('/schedule/:week', function ($id, $week) use($app) {
+// 			if($week == 'ics') {
+// 				$app->response->headers->set('Content-Type', 'text/calendar; charset=utf-8');
+// 				$app->response->headers->set('Content-Disposition', 'attachment; filename=schedule'.$id.'.ics');
+// 				echo infoweb_teacher::ics($id);
+// 			}
+// 		  createResponse(infoweb_teacher::main($id, $week));
+// 		});
+// 	});
+
+// });
+
+
+
+$app->get('/v2/student/settoken/:key', function($key) use($app) {
+	$zportal = new Zportal();
+	$zportal->setAppKey($key);
+	$zportal->getToken();
+	setcookie('ztoken', $zportal->token, time()+45862485, "/");
+	createResponse([
+		'token' => $zportal->token
+	]);
+});
+$app->get('/v2/student/schedule/:week', function($week) {
+	if($week == 0) 
+		$week = date('W');
+	$zportal = new Zportal();
+	$zportal->setToken($_COOKIE['ztoken']);
+	$schedule = $zportal->getSchedule($week);
+	createResponse($schedule);
 });
 
 // Run le app

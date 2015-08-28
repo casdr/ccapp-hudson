@@ -55,9 +55,13 @@ class curl {
      */
   public static function post($request='', $content=array(), $options=array(), $headers=array()) {
       //Set the post fields
-      $fields_string = '';
-      foreach($content as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-      rtrim($fields_string, '&');
+      if(is_array($content)) {
+        $fields_string = '';
+        foreach($content as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+        rtrim($fields_string, '&');
+      } else {
+        $fields_string = $content;
+      }
       
       //Initializing...
       $ch = curl_init();
