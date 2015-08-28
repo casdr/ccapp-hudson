@@ -62,7 +62,7 @@ $app->get('/v2/app/message', function() use($app) {
 	createResponse([
 		[
 			'id' => 5,
-			'onetime' => false,
+			'onetime' => true,
 			'type' => 'success',
 			'text' => 'Wij wensen iedereen succes in het nieuwe schooljaar! Maak er een mooi jaar van :-)'
 		],
