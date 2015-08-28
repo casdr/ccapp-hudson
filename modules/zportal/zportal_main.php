@@ -58,7 +58,15 @@ class Zportal {
 		);
 		$curl = curl::post($url, $data);
 		$json = json_decode($curl);
-		$this->token = $json->access_token;
+
+
+		if(!$json) {
+			return false;
+		}
+		else {
+			$this->token = $json->access_token;
+			return true;
+		}
 	}
 	public function setToken($token) {
 		$this->token = $token;

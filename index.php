@@ -56,93 +56,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
-/*
-// Schedules
-$app->get('/v1/room/:id/schedule/:week', function ($id, $week) {
-  createResponse(infoweb_room::main($id, $week));
-});
-$app->get('/v1/group/:id/schedule/:week', function ($id, $week) {
-  createResponse(infoweb_group::main($id, $week));
-});
 
-
-// Lists
-$app->get('/v1/list/weeks', function () {
-  createResponse(infoweb_weeks::main());
+$app->get('/v2/app/message', function() use($app) {
+	// last: 5
+	createResponse([
+		[
+			'id' => 2,
+			'onetime' => true,
+			'type' => 'success',
+			'text' => 'Welkom terug op het vernieuwde CCWeb!'
+		],
+		[
+			'id' => 1,
+			'onetime' => false,
+			'type' => 'warning',
+			'text' => '<b>Let op!</b> Door een fout in Zermelo kun je momenteel niet zien welke lessen je hebt. Dit kan in de officiele website ook niet. Het probleem is gemeld.'
+		],
+		[
+			'id' => 5,
+			'onetime' => false,
+			'type' => 'success',
+			'text' => 'Wij wensen iedereen succes in het nieuwe schooljaar! Maak er een mooi jaar van :-)'
+		]
+	]);
 });
-$app->get('/v1/list/teachers', function () {
-  createResponse(infoweb_list_teachers::main());
-});
-$app->get('/v1/list/students', function() {
-	createResponse(infoweb_list_students::view(false));
-});
-$app->get('/v1/list/students/ingroups', function() {
-	createResponse(infoweb_list_students::view(true));
-});
-$app->get('/v1/list/rooms', function() {
-	createResponse(infoweb_list_rooms::main());
-});
-$app->get('/v1/list/groups', function() {
-	createResponse(infoweb_list_groups::main());
-});
-
-// List generators
-$app->get('/v1/list/students/create', function() {
-	createResponse(infoweb_list_students::save());
-});
-$app->get('/v1/list/rooms/create', function() {
-	infoweb_list_rooms::generateJson();
-});
-
-// Testing
-$app->get('/v1/search/student/:id/name', function($id) {
-	$name = '';
-	foreach(infoweb_list_students::view() as $group) {
-		foreach($group['students'] as $student) {
-			if(strpos($student['id'], $id) != 0) $name = $student['name'];
-		}
-	}
-	createResponse(array('name'=>$name, 'id'=>$id));
-});
-
-// Stuff for in the app
-$app->get('/v1/app/iotd', function () use($app) {
-  createResponse(array('url'=>app_iotd::main()));
-});
-*/
-
-// v1
-// $app->group('/v1', function() use($app) {
-
-// 	$app->group('/student/:id', function($id) use($app) {
-
-// 		$app->get('/schedule/:week', function ($id, $week) use ($app) {
-// 			if($week == 'ics') {
-// 				$app->response->headers->set('Content-Type', 'text/calendar; charset=utf-8');
-// 				$app->response->headers->set('Content-Disposition', 'attachment; filename=schedule'.$id.'.ics');
-// 				echo infoweb_student::ics($id);
-// 			}
-// 		  else createResponse(infoweb_student::main($id, $week));
-// 		});
-// 		$app->post('/grades/:periode', function($id, $periode) {
-// 			$password = $_POST['password'];
-// 			$user = 'cc'.str_replace(array('cc', 'Cc', 'cC', 'CC'), '', $id);
-// 			createResponse(portal_student::main($user, $password, $periode));
-// 		});
-
-// 	});
-// 	$app->group('/teacher/:id', function($id) use($app) {
-// 		$app->get('/schedule/:week', function ($id, $week) use($app) {
-// 			if($week == 'ics') {
-// 				$app->response->headers->set('Content-Type', 'text/calendar; charset=utf-8');
-// 				$app->response->headers->set('Content-Disposition', 'attachment; filename=schedule'.$id.'.ics');
-// 				echo infoweb_teacher::ics($id);
-// 			}
-// 		  createResponse(infoweb_teacher::main($id, $week));
-// 		});
-// 	});
-
-// });
 
 $app->get('/v1/app/versions', function () {
 	createResponse(array(
@@ -154,15 +91,21 @@ $app->get('/v1/app/versions', function () {
 		),
 	));
 });
+$app->get('/v1/app/iotd', function () use($app) {
+  createResponse(array('url'=>app_iotd::main()));
+});
 
 $app->get('/v2/zportal/settoken/:key', function($key) use($app) {
 	$zportal = new Zportal();
 	$zportal->setAppKey($key);
-	$zportal->getToken();
-	setcookie('ztoken', $zportal->token, time()+45862485, "/");
-	createResponse([
-		'token' => $zportal->token
-	]);
+	if($zportal->getToken()) {
+		setcookie('ztoken', $zportal->token, time()+31536000, "/");
+		createResponse([
+			'token' => $zportal->token
+		]);
+	} else {
+		$app->halt(403, json_encode(['error'=>'Deze code is niet correct']));
+	}
 });
 $app->get('/v2/zportal/schedule/:week', function($week) use($app) {
 	$token = '';
