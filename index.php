@@ -61,6 +61,12 @@ $app->get('/v2/app/message', function() use($app) {
 	// last: 5
 	createResponse([
 		[
+			'id' => 5,
+			'onetime' => false,
+			'type' => 'success',
+			'text' => 'Wij wensen iedereen succes in het nieuwe schooljaar! Maak er een mooi jaar van :-)'
+		],
+		[
 			'id' => 2,
 			'onetime' => true,
 			'type' => 'success',
@@ -71,12 +77,6 @@ $app->get('/v2/app/message', function() use($app) {
 			'onetime' => false,
 			'type' => 'warning',
 			'text' => '<b>Let op!</b> Door een fout in Zermelo kun je momenteel niet zien welke lessen je hebt. Dit kan in de officiele website ook niet. Het probleem is gemeld.'
-		],
-		[
-			'id' => 5,
-			'onetime' => false,
-			'type' => 'success',
-			'text' => 'Wij wensen iedereen succes in het nieuwe schooljaar! Maak er een mooi jaar van :-)'
 		]
 	]);
 });
