@@ -76,7 +76,7 @@ $app->get('/v2/app/message', function() use($app) {
 			'id' => 1,
 			'onetime' => false,
 			'type' => 'warning',
-			'text' => '<b>Let op!</b> Door een fout in Zermelo kun je momenteel niet zien welke lessen je hebt. Dit kan in de officiele website ook niet. Het probleem is gemeld.'
+			'text' => '<b>Let op!</b> Door een fout in Zermelo kun je momenteel niet zien welke lessen je hebt. Dit kan op de officiele website ook niet. Het probleem is gemeld.'
 		]
 	]);
 });
