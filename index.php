@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 if(isset($_GET['callback'])) echo $_GET['callback'].'(';
 
 $app->get('/v2/app/message', function() use($app) {
-	// last: 5
+	// last: 6
 	createResponse([
 		[
 			'id' => 5,
@@ -73,10 +73,10 @@ $app->get('/v2/app/message', function() use($app) {
 			'text' => 'Welkom terug op het vernieuwde CCWeb!'
 		],
 		[
-			'id' => 1,
-			'onetime' => false,
+			'id' => 6,
+			'onetime' => true,
 			'type' => 'warning',
-			'text' => '<b>Let op!</b> Door een fout in Zermelo kun je momenteel niet zien welke lessen je hebt. Dit kan op de officiele website ook niet. Het probleem is gemeld.'
+			'text' => 'De lessen zijn nu ook te zien. Mogelijk moet je eerst opnieuw <a href="#/login">inloggen</a>'
 		]
 	]);
 });
