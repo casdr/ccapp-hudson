@@ -61,22 +61,10 @@ $app->get('/v2/app/message', function() use($app) {
 	// last: 6
 	createResponse([
 		[
-			'id' => 5,
-			'onetime' => true,
-			'type' => 'success',
-			'text' => 'Wij wensen iedereen succes in het nieuwe schooljaar! Maak er een mooi jaar van :-)'
-		],
-		[
 			'id' => 2,
 			'onetime' => true,
 			'type' => 'success',
 			'text' => 'Welkom terug op het vernieuwde CCWeb!'
-		],
-		[
-			'id' => 6,
-			'onetime' => true,
-			'type' => 'warning',
-			'text' => 'De lessen zijn nu ook te zien. Mogelijk moet je eerst opnieuw <a href="#/login">inloggen</a>'
 		]
 	]);
 });
