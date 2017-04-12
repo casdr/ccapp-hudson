@@ -9,7 +9,7 @@ class app_iotd {
 		$link = $page->find('#search_results', 0)->find('a', 0)->href;
 
 		$page = file_get_html('http://photography.nationalgeographic.com'.$link);
-		$img = $page->find('.primary_photo', 0)->find('img', 0)->src;
-		return 'http:'.$img;
+		$img = $page->find('meta[property=og:image]', 0)->content;
+		return $img;
 	}
 }
